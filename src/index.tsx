@@ -1,3 +1,9 @@
+/**
+ * @packageDocumentation
+ * TrustedForm certificate integration for Next.js — a deferred-loading
+ * `TrustedForm` component built on `@silverassist/next-script-loader`.
+ */
+
 "use client";
 
 import { ScriptLoader } from "@silverassist/next-script-loader";

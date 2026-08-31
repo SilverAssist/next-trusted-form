@@ -1,29 +1,17 @@
 require("@testing-library/jest-dom");
 
-// Suppress expected console.error logs from reCAPTCHA during tests
-const originalConsoleError = console.error;
-const originalConsoleWarn = console.warn;
-
-beforeAll(() => {
-  // Suppress expected reCAPTCHA error/warning logs
-  jest.spyOn(console, "error").mockImplementation((...args) => {
-    const message = args[0]?.toString?.() || "";
-    // Suppress expected reCAPTCHA messages during tests
-    if (message.includes("[reCAPTCHA]") || message.includes("not wrapped in act")) {
-      return;
+// jsdom has no IntersectionObserver implementation. This stub fires
+// `isIntersecting: true` synchronously on observe() -- tests that need to
+// assert the *not yet in viewport* state should mock it themselves.
+if (typeof globalThis.IntersectionObserver === "undefined") {
+  globalThis.IntersectionObserver = class IntersectionObserver {
+    constructor(callback) {
+      this.callback = callback;
     }
-    originalConsoleError.apply(console, args);
-  });
-
-  jest.spyOn(console, "warn").mockImplementation((...args) => {
-    const message = args[0]?.toString?.() || "";
-    if (message.includes("[reCAPTCHA]")) {
-      return;
+    observe(target) {
+      this.callback([{ isIntersecting: true, target }], this);
     }
-    originalConsoleWarn.apply(console, args);
-  });
-});
-
-afterAll(() => {
-  jest.restoreAllMocks();
-});
+    unobserve() {}
+    disconnect() {}
+  };
+}
