@@ -57,9 +57,7 @@ export interface TrustedFormProps {
  * </form>
  * ```
  */
-export default function TrustedForm({
-  autoLoadDelayMs = 5000,
-}: TrustedFormProps = {}) {
+export default function TrustedForm({ autoLoadDelayMs = 5000 }: TrustedFormProps = {}) {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
@@ -114,7 +112,7 @@ export default function TrustedForm({
 
   return (
     <noscript>
-      {/* eslint-disable-next-line @next/next/no-img-element -- vendor tracking pixel, not an optimizable image */}
+      {/* Vendor tracking pixel -- next/image doesn't apply here, and this package isn't itself a Next.js app for eslint-config-next's rule to fire in. */}
       <img src="https://api.trustedform.com/ns.gif" alt="" />
     </noscript>
   );

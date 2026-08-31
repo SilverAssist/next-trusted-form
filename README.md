@@ -52,9 +52,9 @@ lead form, a single `<TrustedForm />` still populates the one
 
 ### Props
 
-| Prop               | Type     | Default | Description                                                              |
-| ------------------ | -------- | ------- | -------------------------------------------------------------------------- |
-| `autoLoadDelayMs`  | `number` | `5000`  | Ceiling before the script loads even without user interaction.           |
+| Prop              | Type     | Default | Description                                                    |
+| ----------------- | -------- | ------- | -------------------------------------------------------------- |
+| `autoLoadDelayMs` | `number` | `5000`  | Ceiling before the script loads even without user interaction. |
 
 ## Integrating with `@silverassist/quirobot`
 

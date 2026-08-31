@@ -5,17 +5,19 @@ import TrustedForm, { trustedFormLoader } from "../index";
 describe("TrustedForm", () => {
   afterEach(() => {
     trustedFormLoader.reset();
-    document
-      .querySelectorAll("input[name='xxTrustedFormCertUrl']")
-      .forEach((el) => el.remove());
-    delete (
-      window as Window & { trustedFormCertUrlCallback?: (url: string) => void }
-    ).trustedFormCertUrlCallback;
+    document.querySelectorAll("input[name='xxTrustedFormCertUrl']").forEach((el) => el.remove());
+    delete (window as Window & { trustedFormCertUrlCallback?: (url: string) => void })
+      .trustedFormCertUrlCallback;
   });
 
-  it("renders the noscript fallback pixel", () => {
+  it("renders a noscript fallback element", () => {
+    // React deliberately doesn't render <noscript>'s children client-side
+    // (JS is running, by definition, wherever React is) -- the element
+    // exists so a no-JS visitor's browser parses the raw HTML and shows the
+    // fallback pixel; that content is never present in a client-rendered
+    // tree, so this only asserts the element itself is there.
     const { container } = render(<TrustedForm />);
-    expect(container.querySelector("noscript img")).toBeInTheDocument();
+    expect(container.querySelector("noscript")).toBeInTheDocument();
   });
 
   it("loads the script after the auto-load timeout", async () => {
@@ -50,9 +52,7 @@ describe("TrustedForm", () => {
       window as Window & { trustedFormCertUrlCallback?: (url: string) => void }
     ).trustedFormCertUrlCallback?.("https://cert.trustedform.com/abc123");
 
-    const field = document.querySelector<HTMLInputElement>(
-      "input[name='xxTrustedFormCertUrl']",
-    );
+    const field = document.querySelector<HTMLInputElement>("input[name='xxTrustedFormCertUrl']");
     expect(field?.value).toBe("https://cert.trustedform.com/abc123");
   });
 
