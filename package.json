@@ -112,5 +112,10 @@
     "*.{ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "overrides": {
+    "eslint-plugin-react": {
+      "eslint": "$eslint"
+    }
   }
 }
